@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Validator;
+use App\Models\User;
+
 
 class LoginController extends Controller
 {
@@ -13,7 +16,7 @@ class LoginController extends Controller
      */
     public function index()
     {
-        //
+        return view('login.index');
     }
 
     /**
@@ -23,7 +26,7 @@ class LoginController extends Controller
      */
     public function create()
     {
-        //
+        return view('register.index');
     }
 
     /**
@@ -34,7 +37,31 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request_data = $request->all();
+
+        $validator = Validator::make($request_data,[
+            'full_name' => 'required',
+            'username' => 'required|unique:users|min:3',
+            'password' => 'required|min:6',
+            'role' => 'required|min:1|integer'
+        ]);
+
+        if($validator->passes()){
+            
+            $dados = $request_data;
+            if(User::create($dados)){
+
+                return response()->json(['success'=>'Your account has successfully created. Go to login page!',
+                                        'login_page'=> route('login')],201);
+            
+            }
+
+            return response()->json(['error'=>'Cannot create your account. Please contact the support!'],400);
+
+        }
+
+        return response()->json(['error'=>$validator->errors()->all()], 400);
+        
     }
 
     /**
