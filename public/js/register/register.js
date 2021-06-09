@@ -4,10 +4,11 @@ $(function() {
     $("#account_form").validate({
         rules: {
             full_name:{
-                
+                required: true,
                 minlength: 3
             },
             username:{
+                required: true,
                 minlength: 3
             },
             password:{
