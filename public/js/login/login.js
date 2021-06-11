@@ -27,16 +27,10 @@ $(function() {
                 
             }).fail(function(data) {
                 
-                let ul_errors = '';
-                
-                $.each(data.responseJSON.error, function( key, value ) {
-                    ul_errors += value+'<br />';
-                });
-
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...Check the errors bellow!',
-                    html: ul_errors
+                    text: data.responseJSON.message
                 });
 
             }).always(function(){
