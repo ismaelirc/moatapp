@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Collection;
 use App\Classes\HttpRequest;
 
 class HomeController extends Controller
@@ -40,7 +39,7 @@ class HomeController extends Controller
             
         });
         
-        return view('home.index',['artists' => $this->artists]);
+        return view('home.index',['artists' => $this->artists,'tokenr' => JWTAuth::getToken()]);
         //return $this->user;
     }
 }
