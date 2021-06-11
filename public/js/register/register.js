@@ -12,9 +12,6 @@ $(function() {
             },
             password:{
                 required: true
-            },
-            role:{
-                required: true
             }
         },
         submitHandler: function(form) {
