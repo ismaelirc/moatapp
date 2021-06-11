@@ -9,7 +9,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Collection;
-use GuzzleHttp\Client;
+use App\Classes\HttpRequest;
 
 class HomeController extends Controller
 {
@@ -29,14 +29,9 @@ class HomeController extends Controller
     public function index()
     {
 
-        $http = new Client();
-        $http_request = $http->request('GET','https://moat.ai/api/task/',[
-            'headers' => ['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ==']
-        ]);
-
-      
-        $response = collect(json_decode($http_request->getBody(), true));
-        
+        $http = new HttpRequest();
+        $response = $http->get('https://moat.ai/api/task/',['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ==']);
+       
         $response->each(function ($item, $key) {
 
             $this->artists[] = ['id'=> $item[0]['id'],
