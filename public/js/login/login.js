@@ -1,19 +1,12 @@
 $(function() {
     
-    $("#account_form").validate({
+    $("#login_form").validate({
         rules: {
-            full_name:{
-                required: true,
-                minlength: 3
-            },
             username:{
                 required: true,
                 minlength: 3
             },
             password:{
-                required: true
-            },
-            role:{
                 required: true
             }
         },
@@ -29,13 +22,8 @@ $(function() {
                     $.LoadingOverlay("show");
                 }
             }).done(function(data) {
-                
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Done!',
-                    text: data.success,
-                    footer: '<a href="'+data.login_page+'">Login Page</a>'
-                });
+               
+                window.location.href = data.url_location+'?token='+data.token;
                 
             }).fail(function(data) {
                 
