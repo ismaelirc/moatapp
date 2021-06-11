@@ -19,7 +19,7 @@ class HomeController extends Controller
     }
 
      /**
-     * Display a listing of the resource.
+     * Display home dashboard.
      *
      * @return \Illuminate\Http\Response
      */
