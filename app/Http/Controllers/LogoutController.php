@@ -27,10 +27,8 @@ class LogoutController extends Controller
         try {
             JWTAuth::invalidate(JWTAuth::getToken());
  
-            return response()->json([
-                'success' => true,
-                'message' => 'User has been logged out'
-            ]);
+            return redirect()->route('login');
+            
         } catch (JWTException $exception) {
             return response()->json([
                 'success' => false,
