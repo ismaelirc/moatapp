@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @push('styles')
-    <link href="{{ asset('css/form_login_register.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ asset('css/login.css') }}" type="text/css" rel="stylesheet">
 @endpush
 @push('scripts')
     <script src="{{ asset('js/login/login.js') }}" type="text/javascript"></script>
