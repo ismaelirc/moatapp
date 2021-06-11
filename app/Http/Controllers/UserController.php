@@ -9,16 +9,7 @@ use Hash;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
+   
     /**
      * Show the form for creating a new resource.
      *
@@ -48,8 +39,12 @@ class UserController extends Controller
 
         if($validator->passes()){
             
-            $dados = $request_data;
-            if(User::create($dados)){
+            if(User::create([
+                'full_name' => $request->full_name,
+                'username' => $request->username,
+                'password' => bcrypt($request_data['password']),
+                'role' => isset($request->role) ? 1 : 0
+            ])){
 
                 return response()->json(['success'=>'Your account has successfully created. Go to login page!',
                                         'login_page'=> route('login')],201);
