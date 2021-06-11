@@ -24,11 +24,10 @@
             </div>
 
             <div class="mb-3">
-                <select class="form-select" id="role" name="role">
-                    <option value="0">Select a role</option>
-                    <option value="1">Normal</option>
-                    <option value="2">Admin</option>
-                </select>
+                <input class="form-check-input" type="checkbox" value="1" id="role" name="role">
+                <label class="form-check-label" for="admin">
+                    User is Admin
+                </label>
             </div>
 
             <div class="d-grid gap-2">
