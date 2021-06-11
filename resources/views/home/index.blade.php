@@ -40,11 +40,30 @@
                     </ul>
                 </div>
             </nav>
-
+            
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Dashboard</h1>
+                    <h1 class="h2">Artists</h1>
                 </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Artist</th>
+                            <th scope="col">Twitter</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($artists as $artist)
+                        <tr>
+                            <td>{{ $artist['id'] }}</td>
+                            <td>{{ $artist['name'] }}</td>
+                            <td><a href="https://twitter.com/{{ $artist['twitter'] }}">{{ $artist['twitter'] }}</a></td>
+                        </tr>
+                    </tbody>
+                    @endforeach
+                </table>
+
             </main>
         </div>
     </div>
