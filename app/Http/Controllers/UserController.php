@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\User;
+use Hash;
 
 class UserController extends Controller
 {
@@ -42,7 +43,7 @@ class UserController extends Controller
             'full_name' => 'required',
             'username' => 'required|unique:users|min:3',
             'password' => 'required|min:6',
-            'role' => 'required|integer'
+            'role' => 'integer'
         ]);
 
         if($validator->passes()){
