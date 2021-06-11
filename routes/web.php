@@ -21,4 +21,5 @@ Route::post('/register', [App\Http\Controllers\UserController::class, 'store'])-
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/logout', [App\Http\Controllers\LogoutController::class, 'logout'])->name('logout');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/album', [App\Http\Controllers\AlbumController::class, 'index'])->name('album');
 });
