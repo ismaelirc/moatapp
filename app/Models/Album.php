@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Album extends Model
 {
     use HasFactory;
-    
+  
     /**
     * The attributes that are mass assignable.
     *
@@ -33,5 +33,23 @@ class Album extends Model
     * @var array
     */
    protected $casts = [];
+
+   /**
+    * Cast the artist ID in album to artist name.
+    *
+    * @return array
+    */
+   protected function cast_artists_id($albums, $artists){
+
+        foreach($albums as $a){
+
+            $index = ($a->artist_id) - 1;
+            $a->artist_name = $artists[$index]['name'];
+           
+        }
+
+        return $albums;
+
+   }
 
 }

@@ -52,12 +52,20 @@
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col">Artist</th>
-                            <th scope="col">Twitter</th>
+                            <th scope="col">Album name</th>
+                            <th scope="col">Artist name</th>
+                            <th scope="col">Year</th>
                         </tr>
                     </thead>
                     <tbody>
-                       
+                        @foreach($albums as $album)
+                        <tr>
+                            <td>{{ $album->id }}</td>
+                            <td><a href="">{{ $album->album_name }}</a></td>
+                            <td>{{ $album->artist_name }}</td>
+                            <td>{{ $album->year }}</td>
+                        </tr>
+                        @endforeach
                     </tbody>
                    
                 </table>

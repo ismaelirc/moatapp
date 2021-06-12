@@ -60,8 +60,8 @@
                             <td><a href="{{route('album').'?artist='.$artist['id'].'&token='.JWTAuth::getToken()}}">{{ $artist['name'] }}</a></td>
                             <td><a href="https://twitter.com/{{ $artist['twitter'] }}">{{ $artist['twitter'] }}</a></td>
                         </tr>
+                        @endforeach
                     </tbody>
-                    @endforeach
                 </table>
 
             </main>

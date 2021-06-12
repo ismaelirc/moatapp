@@ -33,8 +33,7 @@ $(function() {
                    
                     $("#album").val(data.album_id);
                     $(form).attr('action','/album/update');
-                    //$(form).attr('method','PUT');
-
+                    
                     Swal.fire({
                         icon: 'success',
                         title: 'Done!',

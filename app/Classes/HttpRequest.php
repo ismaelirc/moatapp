@@ -13,6 +13,8 @@ use GuzzleHttp\Client;
 
 class HttpRequest {
 
+    protected $artists;
+
     public function __construct() {}
 
     /**
@@ -30,6 +32,14 @@ class HttpRequest {
 
         $response = collect(json_decode($http_request->getBody(), true));
 
-        return $response;
+        $response->each(function ($item, $key) {
+
+            $this->artists[] = ['id'=> $item[0]['id'],
+                                'name'=> $item[0]['name'], 
+                                'twitter' => $item[0]['twitter']];
+            
+        });
+
+        return $this->artists;
     }
 }

@@ -31,15 +31,7 @@ class HomeController extends Controller
         $http = new HttpRequest();
         $response = $http->get('https://moat.ai/api/task/',['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ==']);
        
-        $response->each(function ($item, $key) {
-
-            $this->artists[] = ['id'=> $item[0]['id'],
-                                'name'=> $item[0]['name'], 
-                                'twitter' => $item[0]['twitter']];
-            
-        });
+        return view('home.index',['artists' => $response,'token' => JWTAuth::getToken()]);
         
-        return view('home.index',['artists' => $this->artists,'token' => JWTAuth::getToken()]);
-        //return $this->user;
     }
 }

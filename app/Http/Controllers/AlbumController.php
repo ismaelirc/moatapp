@@ -26,7 +26,13 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        return view('album.index');
+        $albums = Album::get();
+        
+        $http = new HttpRequest();
+        $response = $http->get('https://moat.ai/api/task/',['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ==']);
+       
+        $albums = Album::cast_artists_id($albums,$response);
+        return view('album.index',['albums' => $albums]);
     }
 
     /**
@@ -38,16 +44,8 @@ class AlbumController extends Controller
     {
         $http = new HttpRequest();
         $response = $http->get('https://moat.ai/api/task/',['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ==']);
-       
-        $response->each(function ($item, $key) {
 
-            $this->artists[] = ['id'=> $item[0]['id'],
-                                'name'=> $item[0]['name'], 
-                                'twitter' => $item[0]['twitter']];
-            
-        });
-
-        return view('album.form',['artists' => $this->artists]);
+        return view('album.form',['artists' => $response]);
     }
 
     /**
@@ -118,14 +116,18 @@ class AlbumController extends Controller
      */
     public function update(Request $request)
     {
+        $album = Album::find($request->get('album'));
+        $album->artist_id = $request->get('artist');
+        $album->album_name = $request->get('album_name');
+        $album->year = $request->get('year');
+       
+        if($album->save()){
+            return response()->json(['success'=>'Album updated!', 'album_id' => $album->id],201);
         
-        return $request->input('album_name');
-        /*
-        $equipamento->tipo = $request->input('tipo');
-        $equipamento->modelo = $request->input('modelo');
-        $equipamento->fabricante = $request->input('fabricante');
-        $equipamento->update();
-        */
+        }
+
+        return response()->json(['error'=>'Cannot create the album. Please contact the support!'],400);
+
     }
 
     /**
@@ -136,6 +138,9 @@ class AlbumController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $album = Album::find($id);
+        $album->delete();
+        return redirect()->route('category.index')->with('message','category deleted');
+ 
     }
 }

@@ -13,14 +13,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/**
+ * Login and registration routes
+ */
 Route::get('/login', [App\Http\Controllers\LoginController::class, 'index'])->name('login');
 Route::post('/login', [App\Http\Controllers\LoginController::class, 'authenticate'])->name('login');
 Route::get('/register', [App\Http\Controllers\UserController::class, 'create'])->name('register');
 Route::post('/register', [App\Http\Controllers\UserController::class, 'store'])->name('register');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
+    /**
+     * General routes
+     */
     Route::get('/logout', [App\Http\Controllers\LogoutController::class, 'logout'])->name('logout');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    
+    /**
+     * Albums routes
+     */
     Route::get('/album', [App\Http\Controllers\AlbumController::class, 'index'])->name('album');
     Route::get('/album/new', [App\Http\Controllers\AlbumController::class, 'create'])->name('album.new');
     Route::post('/album/new', [App\Http\Controllers\AlbumController::class, 'store'])->name('album.create');
