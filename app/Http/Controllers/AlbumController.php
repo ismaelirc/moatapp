@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use JWTAuth;
-use App\Models\User;
+use Validator;
+use App\Models\Album;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Validator;
 use App\Classes\HttpRequest;
 
 class AlbumController extends Controller
 {
     protected $user;
+    protected $artists = [];
 
     public function __construct()
     {
@@ -25,7 +26,7 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        return $this->user;
+        return view('album.index');
     }
 
     /**
@@ -35,7 +36,18 @@ class AlbumController extends Controller
      */
     public function create()
     {
-        //
+        $http = new HttpRequest();
+        $response = $http->get('https://moat.ai/api/task/',['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ==']);
+       
+        $response->each(function ($item, $key) {
+
+            $this->artists[] = ['id'=> $item[0]['id'],
+                                'name'=> $item[0]['name'], 
+                                'twitter' => $item[0]['twitter']];
+            
+        });
+
+        return view('album.form',['artists' => $this->artists]);
     }
 
     /**
@@ -46,7 +58,33 @@ class AlbumController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request_data = $request->all();
+    
+        $validator = Validator::make($request_data,[
+            'album_name' => 'required|min:3',
+            'year' => 'required|digits:4|integer|min:1900|max:'.(date('Y')+1),
+            'artist' => 'required|integer'
+        ]);
+
+        if($validator->passes()){
+            
+            $album = Album::create([
+                'artist_id' => $request->artist,
+                'album_name' => $request->album_name,
+                'year' => $request->year
+            ]);
+
+            if($album){
+                return response()->json(['success'=>'Album save!', 'album_id' => $album->id],201);
+            
+            }
+
+            return response()->json(['error'=>'Cannot create the album. Please contact the support!'],400);
+
+        }
+
+        return response()->json(['error'=>$validator->errors()->all()], 400);
+
     }
 
     /**
@@ -78,9 +116,16 @@ class AlbumController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        
+        return $request->input('album_name');
+        /*
+        $equipamento->tipo = $request->input('tipo');
+        $equipamento->modelo = $request->input('modelo');
+        $equipamento->fabricante = $request->input('fabricante');
+        $equipamento->update();
+        */
     }
 
     /**
