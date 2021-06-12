@@ -86,25 +86,20 @@ class AlbumController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, $token)
     {
-        //
+        $album = Album::find($id);
+    
+        $http = new HttpRequest();
+        $artists = $http->get('https://moat.ai/api/task/',['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ==']);
+        
+        return view('album.form',['album' => $album, 'token' => $token, 'artists' => $artists]);
+    
     }
 
     /**
@@ -136,11 +131,15 @@ class AlbumController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $token)
     {
-        $album = Album::find($id);
-        $album->delete();
-        return redirect()->route('category.index')->with('message','category deleted');
- 
+        if($this->user->role){
+
+            $album = Album::find($id);
+            $album->delete();
+            return response()->json(['success'=>'Album deleted!','page'=> route('album')],200);
+        }
+
+        return response()->json(['error'=>'Only admins can delete a album!'],400);
     }
 }

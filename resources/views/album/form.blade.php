@@ -50,25 +50,26 @@
                     <input type="hidden" name="token" id="token" value="{{JWTAuth::getToken()}}" />
                     <form action="{{ route('album.create')}}" name="album_form" id="album_form" method="post">
                         @csrf
-                        <input type="hidden" name="album" id="album" value="0" />
+                        <input type="hidden" name="album" id="album" value="{{isset($album) ? $album->id : ''}}" />
                         <div class="mb-3">
                             <label for="artist" class="form-label">Artist</label>
                             <select class="form-select" name="artist" id="artist">
                                 @foreach ($artists as $artist)
-                                    <option value="{{$artist['id']}}">{{$artist['name']}}</option>
+                                    <option value="{{$artist['id']}}" 
+                                    @if(isset($album) && ($album->artist_id == $artist['id']))  selected='selected' @endif>{{$artist['name']}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="album_name" class="form-label">Album name</label>
-                            <input type="text" class="form-control" name="album_name" id="album_name">
+                            <input type="text" class="form-control" name="album_name" id="album_name" value="{{isset($album) ? $album->album_name : ''}}">
                         </div>
                         <div class="mb-3">
                             <label for="year" class="form-label">Album Year</label>
-                            <input type="text" class="form-control" name="year" id="year">
+                            <input type="text" class="form-control" name="year" id="year" value="{{isset($album) ? $album->year : ''}}">
                         </div>
-                        
                         <button type="submit" class="btn btn-primary">Save album</button>
+                        <button type="button" @if(!isset($album)) disabled="disabled" @endif class="btn btn-danger" id="delete_album">Delete album</button>
                     </form>
                 </div>
             </main>

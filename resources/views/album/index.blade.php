@@ -61,7 +61,7 @@
                         @foreach($albums as $album)
                         <tr>
                             <td>{{ $album->id }}</td>
-                            <td><a href="">{{ $album->album_name }}</a></td>
+                            <td><a href="{{ route('album.edit').'/'.$album->id.'/'.JWTAuth::getToken()}}">{{ $album->album_name }}</a></td>
                             <td>{{ $album->artist_name }}</td>
                             <td>{{ $album->year }}</td>
                         </tr>

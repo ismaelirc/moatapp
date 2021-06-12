@@ -34,5 +34,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('/album', [App\Http\Controllers\AlbumController::class, 'index'])->name('album');
     Route::get('/album/new', [App\Http\Controllers\AlbumController::class, 'create'])->name('album.new');
     Route::post('/album/new', [App\Http\Controllers\AlbumController::class, 'store'])->name('album.create');
-    Route::post('/album/update', [App\Http\Controllers\AlbumController::class, 'update'])->name('album.update');
+    Route::post('/album/update/{id?}/{token?}', [App\Http\Controllers\AlbumController::class, 'update'])->name('album.update');
+    Route::get('/album/update/{id?}/{token?}', [App\Http\Controllers\AlbumController::class, 'edit'])->name('album.edit');
+    Route::delete('/album/delete/{id?}/{token?}', [App\Http\Controllers\AlbumController::class, 'destroy'])->name('album.delete');
 });
