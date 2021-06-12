@@ -39,7 +39,7 @@ class HomeController extends Controller
             
         });
         
-        return view('home.index',['artists' => $this->artists,'tokenr' => JWTAuth::getToken()]);
+        return view('home.index',['artists' => $this->artists,'token' => JWTAuth::getToken()]);
         //return $this->user;
     }
 }
