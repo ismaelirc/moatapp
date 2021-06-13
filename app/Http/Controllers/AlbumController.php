@@ -57,7 +57,16 @@ class AlbumController extends Controller
     public function store(Request $request)
     {
         $request_data = $request->all();
-    
+
+        //make sure the artists is in the list
+        $http = new HttpRequest();
+        $artists = $http->get('https://moat.ai/api/task/',['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ==']);
+        $valid_artist = Album::is_valid_artist($request['artist'],$artists);
+       
+        if($valid_artist){
+            return response()->json(['error' => 'The artist must be in the list provided!'],400);
+        }
+
         $validator = Validator::make($request_data,[
             'album_name' => 'required|min:3',
             'year' => 'required|digits:4|integer|min:1900|max:'.(date('Y')+1),

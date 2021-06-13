@@ -51,7 +51,7 @@ $(function() {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...Check the errors bellow!',
-                    text: data.responseJSON.message
+                    text: data.responseJSON.error
                 });
 
             }).always(function(){

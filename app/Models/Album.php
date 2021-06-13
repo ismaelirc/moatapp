@@ -49,7 +49,15 @@ class Album extends Model
         }
 
         return $albums;
+   }
 
+   protected function is_valid_artist($artist_id,$artists){
+    
+        if(($valid = array_search($artist_id,array_column($artists,'id')) === false)){
+            return true;
+        }
+
+        return false;
    }
 
 }
