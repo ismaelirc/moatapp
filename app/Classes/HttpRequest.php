@@ -14,20 +14,33 @@ use GuzzleHttp\Client;
 class HttpRequest {
 
     protected $artists;
+    private $url;
+    private $header;
+    private $method;
 
-    public function __construct() {}
+     /**
+     * 
+     * @param url URL to send the request 
+     * @param header All headers neededrty
+     * @param method Http method to use
+     */
+    public function __construct($url, $header, $method) {
+        
+        $this->url = $url;
+        $this->header = $header;
+        $this->method = $method;
+    }
 
     /**
      * Do GET request
-     * @param url URL to send the request 
-     * @param header All headers neededrty
+     * 
      * @return Array Artist list
      */
-    public function get($url, $header) {
+    public function get() {
 
         $http = new Client();
-        $http_request = $http->request('GET','https://moat.ai/api/task/',[
-            'headers' => $header
+        $http_request = $http->request($this->method,$this->url,[
+            'headers' => $this->header
         ]);
 
         $response = collect(json_decode($http_request->getBody(), true));

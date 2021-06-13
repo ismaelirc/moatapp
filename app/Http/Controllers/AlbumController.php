@@ -28,10 +28,12 @@ class AlbumController extends Controller
     {
         $albums = Album::get();
         
-        $http = new HttpRequest();
-        $response = $http->get('https://moat.ai/api/task/',['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ==']);
-       
-        $albums = Album::cast_artists_id($albums,$response);
+        $http = new HttpRequest('https://moat.ai/api/task/',
+                                ['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ=='],
+                                'post');
+        $artists = $http->get();
+        
+        $albums = Album::cast_artists_id($albums,$artists);
         return view('album.index',['albums' => $albums]);
     }
 
@@ -42,10 +44,12 @@ class AlbumController extends Controller
      */
     public function create()
     {
-        $http = new HttpRequest();
-        $response = $http->get('https://moat.ai/api/task/',['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ==']);
+        $http = new HttpRequest('https://moat.ai/api/task/',
+                                ['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ=='],
+                                'post');
+        $artists = $http->get();
 
-        return view('album.form',['artists' => $response]);
+        return view('album.form',['artists' => $artists]);
     }
 
     /**
@@ -59,8 +63,10 @@ class AlbumController extends Controller
         $request_data = $request->all();
 
         //make sure the artists is in the list
-        $http = new HttpRequest();
-        $artists = $http->get('https://moat.ai/api/task/',['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ==']);
+        $http = new HttpRequest('https://moat.ai/api/task/',
+                                ['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ=='],
+                                'post');
+        $artists = $http->get();
         $valid_artist = Album::is_valid_artist($request['artist'],$artists);
        
         if($valid_artist){
@@ -104,8 +110,10 @@ class AlbumController extends Controller
     {
         $album = Album::find($id);
     
-        $http = new HttpRequest();
-        $artists = $http->get('https://moat.ai/api/task/',['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ==']);
+        $http = new HttpRequest('https://moat.ai/api/task/',
+                                ['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ=='],
+                                'post');
+        $artists = $http->get();
         
         return view('album.form',['album' => $album, 'token' => $token, 'artists' => $artists]);
     
@@ -124,6 +132,16 @@ class AlbumController extends Controller
         $album->artist_id = $request->get('artist');
         $album->album_name = $request->get('album_name');
         $album->year = $request->get('year');
+
+        $http = new HttpRequest('https://moat.ai/api/task/',
+                                ['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ=='],
+                                'post');
+        $artists = $http->get();
+        $valid_artist = Album::is_valid_artist($request->get('artist'),$artists);
+       
+        if($valid_artist){
+            return response()->json(['error' => 'The artist must be in the list provided!'],400);
+        }
        
         if($album->save()){
             return response()->json(['success'=>'Album updated!', 'album_id' => $album->id],201);

@@ -28,10 +28,13 @@ class HomeController extends Controller
     public function index()
     {
 
-        $http = new HttpRequest();
-        $response = $http->get('https://moat.ai/api/task/',['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ==']);
-       
-        return view('home.index',['artists' => $response,'token' => JWTAuth::getToken()]);
+        $http = new HttpRequest('https://moat.ai/api/task/',
+                                ['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ=='],
+                                'post');
+                                
+        $artists = $http->get();
+        
+        return view('home.index',['artists' => $artists,'token' => JWTAuth::getToken()]);
         
     }
 }
