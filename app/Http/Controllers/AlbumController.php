@@ -47,6 +47,7 @@ class AlbumController extends Controller
         $http = new HttpRequest('https://moat.ai/api/task/',
                                 ['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ=='],
                                 'post');
+
         $artists = $http->get();
 
         return view('album.form',['artists' => $artists]);
