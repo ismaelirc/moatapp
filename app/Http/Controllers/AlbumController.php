@@ -20,7 +20,7 @@ class AlbumController extends Controller
 
     public function __construct()
     {
-        $this->user = $this->getAuthenticatedUser();
+        $this->user = JWTAuth::parseToken()->authenticate();
     }
     
     /**
@@ -164,10 +164,12 @@ class AlbumController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
+     * @param  string  $token
      * @return \Illuminate\Http\Response
      */
     public function destroy($id, $token)
     {
+       
         if($this->user->role){
 
             $album = Album::find($id);
