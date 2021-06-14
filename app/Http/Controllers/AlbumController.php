@@ -21,6 +21,7 @@ class AlbumController extends Controller
     {
         $this->user = $this->getAuthenticatedUser();
     }
+    
     /**
      * Display a listing of the resource.
      *
