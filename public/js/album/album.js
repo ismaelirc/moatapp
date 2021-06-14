@@ -47,11 +47,15 @@ $(function() {
                 });
 
             }).fail(function(data) {
+                let errorMsg = '';
+                $.each(data.responseJSON.errors,function(k, v){
+                    errorMsg += v[0]+"<br />";
+                })
                 
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...Check the errors bellow!',
-                    text: data.responseJSON.error
+                    html: errorMsg
                 });
 
             }).always(function(){

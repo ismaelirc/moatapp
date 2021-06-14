@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\User;
 use Hash;
+use App\Http\Requests\UserFormRequest;
 
 class UserController extends Controller
 {
@@ -26,18 +27,13 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserFormRequest $request)
     {
         $request_data = $request->all();
 
-        $validator = Validator::make($request_data,[
-            'full_name' => 'required',
-            'username' => 'required|unique:users|min:3',
-            'password' => 'required|min:6',
-            'role' => 'integer'
-        ]);
+        $validator = $request->validated();
 
-        if($validator->passes()){
+        if($validator){
             
             if(User::create([
                 'full_name' => $request->full_name,

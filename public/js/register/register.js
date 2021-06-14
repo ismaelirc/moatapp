@@ -36,16 +36,15 @@ $(function() {
                 
             }).fail(function(data) {
                 
-                let ul_errors = '';
-                
-                $.each(data.responseJSON.error, function( key, value ) {
-                    ul_errors += value+'<br />';
-                });
+                let errorMsg = '';
+                $.each(data.responseJSON.errors,function(k, v){
+                    errorMsg += v[0]+"<br />";
+                })
 
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...Check the errors bellow!',
-                    html: ul_errors
+                    html: errorMsg
                 });
 
             }).always(function(){

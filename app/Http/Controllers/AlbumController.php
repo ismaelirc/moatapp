@@ -9,6 +9,7 @@ use App\Models\Album;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\AlbumFormRequest;
 use App\Classes\HttpRequest;
 
 class AlbumController extends Controller
@@ -69,7 +70,7 @@ class AlbumController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AlbumFormRequest $request)
     {
         $request_data = $request->all();
 
@@ -84,13 +85,9 @@ class AlbumController extends Controller
             return response()->json(['error' => 'The artist must be in the list provided!'],400);
         }
 
-        $validator = Validator::make($request_data,[
-            'album_name' => 'required|min:3',
-            'year' => 'required|digits:4|integer|min:1900|max:'.(date('Y')+1),
-            'artist' => 'required|integer'
-        ]);
+        $validator = $request->validated();
 
-        if($validator->passes()){
+        if($validator){
             
             $album = Album::create([
                 'artist_id' => $request->artist,
@@ -159,7 +156,7 @@ class AlbumController extends Controller
         
         }
 
-        return response()->json(['error'=>'Cannot create the album. Please contact the support!'],400);
+        return response()->json(['error'=>'Cannot updated the album. Please contact the support!'],400);
 
     }
 
