@@ -17,7 +17,7 @@ class HomeController extends Controller
 
     public function __construct()
     {
-        $this->user = $this->getAuthenticatedUser();
+        $this->user = JWTAuth::parseToken()->authenticate();
     }
 
      /**
