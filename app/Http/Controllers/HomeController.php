@@ -17,7 +17,7 @@ class HomeController extends Controller
 
     public function __construct()
     {
-        $this->user = JWTAuth::parseToken()->authenticate();
+        $this->user = $this->getAuthenticatedUser();
     }
 
      /**
@@ -27,7 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-
+       
         $http = new HttpRequest('https://moat.ai/api/task/',
                                 ['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ=='],
                                 'post');

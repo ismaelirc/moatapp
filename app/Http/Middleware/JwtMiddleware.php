@@ -19,17 +19,47 @@ class JwtMiddleware extends BaseMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        $type = 'submit';
+        
+        if($request->ajax()){  
+            $type = 'ajax';
+        }
+
         try {
-            $user = JWTAuth::parseToken()->authenticate();
+            
+            if (! $user = JWTAuth::parseToken()->authenticate()) {
+                $this->handle_return(['status' => 'User not found'],$type);
+            }
+            
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
-                return response()->json(['status' => 'Token is Invalid']);
+                
+                $this->handle_return(['status' => 'Token is Invalid'],$type);
+                
             }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
-                return response()->json(['status' => 'Token is Expired']);
+                
+                $this->handle_return(['status' => 'Token is Expired'],$type);
+                
+            }else if($e instanceof \Tymon\JWTAuth\Exceptions\JWTException){
+               
+                $this->handle_return(['status' => 'The token could not be parsed from the request'],$type);
+
             }else{
-                return response()->json(['status' => 'Authorization Token not found']);
+                
+                $this->handle_return(['status' => 'Authorization Token not found'],$type);
+                
             }
         }
         return $next($request);
+    }
+
+    private function handle_return($msg, $type_return){
+
+        if($type == 'ajax'){
+            return response()->json($msg);
+        }            
+        
+        return redirect()->route('login');
+    
     }
 }
