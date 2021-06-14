@@ -51,6 +51,13 @@ class Album extends Model
         return $albums;
    }
 
+    /**
+    * Verify if artist ID is in the list.
+    * @param $artist_id Artist's ID
+    * @param $artists Array of artists
+    *
+    * @return Boolean
+    */
    protected function is_valid_artist($artist_id,$artists){
     
         if(($valid = array_search($artist_id,array_column($artists,'id')) === false)){
