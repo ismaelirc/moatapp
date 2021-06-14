@@ -25,7 +25,7 @@
                         @foreach($artists as $artist)
                         <tr>
                             <td>{{ $artist['id'] }}</td>
-                            <td><a href="{{route('album').'/'.JWTAuth::getToken().'/'.$artist['id']}}">{{ $artist['name'] }}</a></td>
+                            <td><a href="{{route('album',['token' => JWTAuth::getToken(), 'id' => $artist['id']])}}">{{ $artist['name'] }}</a></td>
                             <td><a href="https://twitter.com/{{ $artist['twitter'] }}">{{ $artist['twitter'] }}</a></td>
                         </tr>
                         @endforeach
