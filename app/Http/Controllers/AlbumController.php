@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use JWTAuth;
 use Validator;
+use DB;
 use App\Models\Album;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -14,6 +15,7 @@ class AlbumController extends Controller
 {
     protected $user;
     protected $artists = [];
+    private $table_name = 'albums';
 
     public function __construct()
     {
@@ -24,9 +26,16 @@ class AlbumController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($token, $artist_id = false)
     {
-        $albums = Album::get();
+        
+        $query = DB::table($this->table_name);
+
+        if($artist_id){
+            $query->where('artist_id',$artist_id);
+        }
+        
+        $albums = $query->get();
         
         $http = new HttpRequest('https://moat.ai/api/task/',
                                 ['Basic' => 'ZGV2ZWxvcGVyOlpHVjJaV3h2Y0dWeQ=='],

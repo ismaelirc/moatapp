@@ -15,7 +15,7 @@
     <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-        <a class="nav-link" href="{{route('logout').'?token='.JWTAuth::getToken()}}">Sign out</a>
+        <a class="nav-link" href="{{route('logout').'/'.JWTAuth::getToken()}}">Sign out</a>
         </li>
     </ul>
     </header>
@@ -57,7 +57,7 @@
                         @foreach($artists as $artist)
                         <tr>
                             <td>{{ $artist['id'] }}</td>
-                            <td><a href="{{route('album').'?artist='.$artist['id'].'&token='.JWTAuth::getToken()}}">{{ $artist['name'] }}</a></td>
+                            <td><a href="{{route('album').'/'.JWTAuth::getToken().'/'.$artist['id']}}">{{ $artist['name'] }}</a></td>
                             <td><a href="https://twitter.com/{{ $artist['twitter'] }}">{{ $artist['twitter'] }}</a></td>
                         </tr>
                         @endforeach

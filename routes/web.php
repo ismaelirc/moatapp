@@ -33,7 +33,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     /**
      * Albums routes
      */
-    Route::get('/album', [App\Http\Controllers\AlbumController::class, 'index'])->name('album');
+    Route::get('/album/{token?}/{id?}', [App\Http\Controllers\AlbumController::class, 'index'])->name('album');
     Route::get('/album/new', [App\Http\Controllers\AlbumController::class, 'create'])->name('album.new');
     Route::post('/album/new', [App\Http\Controllers\AlbumController::class, 'store'])->name('album.create');
     Route::post('/album/update/{id?}/{token?}', [App\Http\Controllers\AlbumController::class, 'update'])->name('album.update');
